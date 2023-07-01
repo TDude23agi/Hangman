@@ -1,0 +1,110 @@
+answer = "Monkey".upper()
+
+letters_guessed = []
+print("Welcome to hangman\nYou have six tries")
+
+def tries(goes):
+    if goes == 6:
+        print("_____")
+        print("|  |")
+        print("|  0")
+        print("|")
+        print("|")
+        print("|")
+        print("_____")
+    if goes == 5:
+        print("_____")
+        print("|  |")
+        print("|  0")
+        print("|  |")
+        print("|")
+        print("|")
+        print("_____")
+    if goes == 4:
+        print("_____")
+        print("|  |")
+        print("|  0")
+        print("| /|")
+        print("|")
+        print("|")
+        print("_____")
+    if goes == 3:
+        print("_____")
+        print("|  |")
+        print("|  0")
+        print("| /|\\")
+        print("|")
+        print("|")
+        print("_____")
+    if goes == 2:
+        print("_____")
+        print("|  |")
+        print("|  0")
+        print("| /|\\")
+        print("|  |")
+        print("|")
+        print("_____")
+    if goes == 1:
+        print("_____")
+        print("|  |")
+        print("|  0")
+        print("| /|\\")
+        print("|  |")
+        print("| /")
+        print("_____")
+    if goes == 0:
+        print("_____")
+        print("|  |")
+        print("|  0")
+        print("| /|\\")
+        print("|  |")
+        print("| / \\")
+        print("_____")
+    if goes == 0:
+        print("The answer was", answer.upper(),"\nYou lose, better luck next time")
+
+def check_space():
+    answer_completion = "_"*len(answer)
+    answer_as_list = list(answer_completion)
+    indices = [i for i, letter in enumerate(answer) if letter == " "]
+    for index in indices:
+        answer_as_list[index] = " "
+    answer_completion= "".join(answer_as_list)
+    print(answer_completion)
+    return answer_completion
+
+def play_hangman():
+    goes = 6
+    win = False
+    display = check_space()
+    while not win:
+        guess = input("Take a guess: ").upper()
+        if guess == answer:
+            win = True
+            print("The answer was", answer.upper(), "\nWell done, You win")
+        elif not guess.isalpha() or (len(answer) < len(guess) < len(answer) and not guess == answer):
+            print("Not a valid guess")
+        elif guess in letters_guessed:
+            print("You have already guessed this")
+        elif guess not in answer:
+            tries(goes)
+            goes -= 1
+            if goes == -1:
+                win = True
+        elif len(guess) > 1:
+            tries(goes)
+            goes -= 1
+        else:
+            answer_as_list = list(display)
+            indices = [i for i, letter in enumerate(answer) if letter == guess]
+            for index in indices:
+                answer_as_list[index] = guess
+            display = "".join(answer_as_list)
+            print(display)
+            if "_" not in display:
+                win = True
+                print("The answer was", answer.upper(),"\nWell done, You win")
+        letters_guessed.append(guess)
+
+
+play_hangman()
